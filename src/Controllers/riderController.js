@@ -49,3 +49,16 @@ exports.booking = (req, res, next) => {
           })
      })
 }
+
+exports.riderhistory = (req, res, next) => {
+     riderService.riderhistory(req.body, (err, result) => {
+          if (err) {
+               return next(err)
+          }
+
+          return res.status(200).send({
+               success: 'true',
+               data: result
+          })
+     })
+}

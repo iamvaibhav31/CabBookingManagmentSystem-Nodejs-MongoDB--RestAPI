@@ -1,6 +1,7 @@
 const driver = require('../Models/driverModels')
 const rider = require('../Models/riderModel')
-const driverhistory = require('../Models/driverhistoryModels')
+const history = require('../Models/driverhistoryModels')
+const riderhis = require('../Models/riderhistoryModels')
 const { getdistanceinKm } = require('../Util/math')
 
 
@@ -55,24 +56,37 @@ async function nearbydriver(params, callback) {
 }
 
 async function booking(params, callback) {
-     const history = new driverhistory({
+     const dhistory = new driverhistory({
           driver_id: params.driverid,
           riderdata: params.riderid,
           ridedistance: params.distance,
           ridecost: params.cost,
      })
 
-     history.save().then((response) => {
+     const rhistory = new riderhistory({
+          rider_id: params.riderid,
+          driverdata: params.driverid,
+          ridecost: params.cost,
+     })
 
-          driver.findByIdAndUpdate(history.driver_id, { ondrive: true }, function (err, docs) {
-               if (err) return callback(err);
 
-               return callback(null, {
-                    comfirmationid: response._id,
-                    driverdata: docs
+     dhistory.save().then((response) => {
+          rhistory.save().then((res) => {
+
+               driver.findByIdAndUpdate(dhistory.driver_id, { ondrive: true }, function (err, docs) {
+                    if (err) return callback(err);
+
+                    return callback(null, {
+                         comfirmationid: response._id,
+                         driverdata: docs
+                    })
+
                })
 
+          }).catch((err) => {
+               return callback(err)
           })
+
 
      }).catch((err) => {
           return callback(err)
@@ -81,8 +95,21 @@ async function booking(params, callback) {
 
 }
 
+async function riderhistory(params, callback) {
+
+     riderhis.find({ rider_id: params.riderid }).populate({
+          path: 'rider',
+          select: '-_id'
+     }).then((response) => {
+          return callback(null, response)
+     }).catch((err) => {
+          return callback(err)
+     })
+}
+
 module.exports = {
      register,
      nearbydriver,
-     booking
+     booking,
+     riderhistory
 }

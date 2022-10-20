@@ -69,5 +69,4 @@ async function enddrive(params, callback) {
 module.exports = {
      register,
      drivehistory,
-     enddrive
 }
