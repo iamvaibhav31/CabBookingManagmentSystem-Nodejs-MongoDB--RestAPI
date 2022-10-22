@@ -61,6 +61,7 @@ async function booking(params, callback) {
           riderdata: params.riderid,
           ridedistance: params.distance,
           ridecost: params.cost,
+          // acceptedride:false
      })
 
      const rhistory = new riderhistory({
@@ -73,14 +74,18 @@ async function booking(params, callback) {
      dhistory.save().then((response) => {
           rhistory.save().then((res) => {
 
-               driver.findByIdAndUpdate(dhistory.driver_id, { ondrive: true }, function (err, docs) {
-                    if (err) return callback(err);
+               // driver.findByIdAndUpdate(dhistory.driver_id, { ondrive: true }, function (err, docs) {
+               //      if (err) return callback(err);
 
-                    return callback(null, {
-                         comfirmationid: response._id,
-                         driverdata: docs
-                    })
+               //      return callback(null, {
+               //           comfirmationid: response._id,
+               //           driverdata: docs
+               //      })
 
+               // })
+
+               return callback(null, {
+                    comfirmationid: response._id,
                })
 
           }).catch((err) => {
