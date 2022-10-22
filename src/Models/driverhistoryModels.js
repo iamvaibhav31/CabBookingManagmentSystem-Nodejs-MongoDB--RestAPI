@@ -2,22 +2,6 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const driverhistorySchema = new Schema({
-     // ridername: {
-     //      type: String,
-     //      required: true
-     // },
-
-     // riderpickupcoordinate: {
-     //      type: { type: String },
-     //      coordinates: [Number],
-
-     // },
-
-     // riderdropcoordinate: {
-     //      type: { type: String },
-     //      coordinates: [Number],
-
-     // },
      driver_id: {
           type: String,
           required: true
@@ -32,6 +16,10 @@ const driverhistorySchema = new Schema({
           required: true
      },
      successfulride: {
+          default: false,
+          type: Boolean
+     },
+     acceptedride: {
           default: false,
           type: Boolean
      }
